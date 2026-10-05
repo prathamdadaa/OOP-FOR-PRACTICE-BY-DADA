@@ -1,0 +1,9 @@
+// Question 0613: STL Vectors and Lists Part 31
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    cout << "Executing: STL Vectors and Lists Part 31" << endl;
+    return 0;
+}
