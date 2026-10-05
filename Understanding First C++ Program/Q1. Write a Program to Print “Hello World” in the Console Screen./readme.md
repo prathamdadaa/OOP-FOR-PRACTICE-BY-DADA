@@ -9,3 +9,9 @@ Helps beginners understand the execution flow of a C++ program*
 *Components of the First C++ Program*
 *Below is the explanation of every line and the components of the above program.*
 <img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/19e5d078-a7c7-488a-8bef-2e7bb4a833c0" />
+
+        -------------------
+        ------Output-------
+        ---Hello World-----
+        -------------------
+                              -by PRATHAM DADA
