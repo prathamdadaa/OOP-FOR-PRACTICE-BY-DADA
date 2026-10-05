@@ -1,101 +1,33 @@
-name: Auto Add C++ Examples
+name: Auto Generate 1000 C++ Examples & Update README
 
 on:
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+  workflow_dispatch:
   push:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
-  create-cpp-files:
+  build-and-commit:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create C++ Example Files
-        run: |
-          mkdir -p cpp-examples
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
-          # 001: Hello World
-          cat << 'EOF' > cpp-examples/001_hello_world.cpp
-          #include <iostream>
-
-          int main() {
-              std::cout << "Hello, World!" << std::endl;
-              return 0;
-          }
-          EOF
-
-          # 002: User Input
-          cat << 'EOF' > cpp-examples/002_user_input.cpp
-          #include <iostream>
-
-          int main() {
-              int num;
-              std::cout << "Enter a number: ";
-              std::cin >> num;
-              std::cout << "You entered: " << num << std::endl;
-              return 0;
-          }
-          EOF
-
-          # 003: Check Even or Odd
-          cat << 'EOF' > cpp-examples/003_even_or_odd.cpp
-          #include <iostream>
-
-          int main() {
-              int n;
-              std::cout << "Enter an integer: ";
-              std::cin >> n;
-              if (n % 2 == 0)
-                  std::cout << n << " is Even." << std::endl;
-              else
-                  std::cout << n << " is Odd." << std::endl;
-              return 0;
-          }
-          EOF
-
-          # 004: Sum of First N Natural Numbers
-          cat << 'EOF' > cpp-examples/004_sum_first_n_numbers.cpp
-          #include <iostream>
-
-          int main() {
-              int n, sum = 0;
-              std::cout << "Enter N: ";
-              std::cin >> n;
-              for (int i = 1; i <= n; ++i) {
-                  sum += i;
-              }
-              std::cout << "Sum = " << sum << std::endl;
-              return 0;
-          }
-          EOF
-
-          # 005: Find Largest of Three Numbers
-          cat << 'EOF' > cpp-examples/005_largest_of_three.cpp
-          #include <iostream>
-
-          int main() {
-              double n1, n2, n3;
-              std::cout << "Enter three numbers: ";
-              std::cin >> n1 >> n2 >> n3;
-
-              if(n1 >= n2 && n1 >= n3)
-                  std::cout << "Largest number: " << n1;
-              else if(n2 >= n1 && n2 >= n3)
-                  std::cout << "Largest number: " << n2;
-              else
-                  std::cout << "Largest number: " << n3;
-
-              return 0;
-          }
-          EOF
+      - name: Run Question & README Generator Script
+        run: python generate_cpp.py
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add cpp-examples/
-          git diff --staged --quiet || git commit -m "Auto-add sequential C++ example files"
+          git add cpp-examples/ README.md
+          git diff --staged --quiet || git commit -m "Auto-generated 1000 C++ questions & updated README table"
           git push
